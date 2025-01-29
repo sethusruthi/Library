@@ -1,7 +1,9 @@
 package com.Books.demo.Service;
 import com.Books.demo.exception.BookNotFoundException;
 import com.Books.demo.model.Books;
+import com.Books.demo.model.Reviews;
 import com.Books.demo.repository.BookRepository;
+import com.Books.demo.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import java.util.List;
 public class BookServiceImpl implements BookService{
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    ReviewRepository reviewRepository;
     @Override
     public Books createBooks(Books books) {
 
@@ -35,15 +39,34 @@ public class BookServiceImpl implements BookService{
 
 
     @Override
-    public Books updateBooksByBookId(Books books) {
-        Books oldBook = getBookByBookId(books.getBookId());
-        oldBook.setBookName(books.getBookName());
+    public Books updateBooksByBookId(int bookId, Books books) {
+        Books oldBook = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not Found"));
+        oldBook.setTitle(books.getTitle());
         oldBook.setPrice(books.getPrice());
-        oldBook.setGenre(books.getGenre());
-        oldBook.setAuthorId(books.getAuthorId());
-        return bookRepository.save(oldBook);
+//        oldBook.setGenre(books.getGenre());
+//        oldBook.setAuthorId(books.getAuthorId());
+        oldBook.setDescription(books.getDescription());
+        oldBook.setRating(books.getRating());
+        oldBook.setCoverImage(books.getCoverImage());
+
+         return bookRepository.save(oldBook);
+         
     }
     public List<Books> getBooksByPriceRange(Double minPrice, Double maxPrice) {
         return bookRepository.findByPriceBetween(minPrice, maxPrice);
+    }
+    public Books saveBook(Books book) {
+        return bookRepository.save(book); // Saves or updates the book
+    }
+
+    @Override
+    public Books addReviewToBook(int bookId, Reviews reviews) {
+        Books books = bookRepository.findById(bookId).orElseThrow
+                (()->new RuntimeException("Book not Found"));
+        reviews.setBooks(books);
+        reviewRepository.save(reviews);
+
+        return books;
     }
 }

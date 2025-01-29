@@ -9,3 +9,4 @@ public interface BookRepository extends JpaRepository<Books, Integer> {
 
     List<Books> findByPriceBetween(Double minPrice, Double maxPrice);
 }
+

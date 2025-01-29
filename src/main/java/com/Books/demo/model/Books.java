@@ -1,8 +1,13 @@
 package com.Books.demo.model;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -13,11 +18,28 @@ public class Books {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id", nullable = false)
     private Integer bookId;
-    @Column(name = "book_name", nullable = false)
-    private String bookName;
-    @Column(name = "author_id", nullable = false)
-    private Integer authorId;
-    private Double price;
-    private String genre;
 
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "price", nullable = false)
+    private Double price;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "cover_image")
+    private String coverImage;
+
+    @Column(name = "rating")
+    private String rating;
+
+    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Reviews> reviews;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    @JsonBackReference
+    private Authors authors;
 }
