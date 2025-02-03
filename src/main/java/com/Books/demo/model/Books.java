@@ -1,4 +1,4 @@
-package com.Books.demo.model;git
+package com.Books.demo.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -30,8 +30,8 @@ public class Books {
     @Column(name = "cover_image")
     private String coverImage;
 
-    @Column(name = "rating")
-    private String rating;
+//    @Column(name = "rating")
+//    private String rating;
 
     @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -41,4 +41,9 @@ public class Books {
     @JoinColumn(name = "author_id", nullable = false)
     @JsonBackReference
     private Authors authors;
+
+    @ManyToOne
+    @JoinColumn(name = "librarian_id")
+    @JsonBackReference
+    private Librarians librarian;
 }
