@@ -1,7 +1,9 @@
 package com.Books.demo.Service;
 import com.Books.demo.exception.BookNotFoundException;
+import com.Books.demo.model.Authors;
 import com.Books.demo.model.Books;
 import com.Books.demo.model.Reviews;
+import com.Books.demo.repository.AuthorRepository;
 import com.Books.demo.repository.BookRepository;
 import com.Books.demo.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ public class BookServiceImpl implements BookService{
     BookRepository bookRepository;
     @Autowired
     ReviewRepository reviewRepository;
+    @Autowired
+    AuthorRepository authorRepository;
     @Override
     public Books createBooks(Books books) {
 
@@ -68,5 +72,17 @@ public class BookServiceImpl implements BookService{
         reviewRepository.save(reviews);
 
         return books;
+    }
+    public List<Reviews> getReviewsByAuthor(Integer authorId) {
+        return reviewRepository.findByAuthorId(authorId);
+    }
+    public Books uploadBooks(Books book, Integer authorId) {
+
+        Authors authors = authorRepository.findById(authorId)
+                .orElseThrow(() -> new RuntimeException("Author not found"));
+
+        book.setAuthor(authors);
+
+        return bookRepository.save(book);
     }
 }
