@@ -30,8 +30,7 @@ public class Reviews {
     @JoinColumn(name = "book_id", nullable = false)
     @JsonBackReference
     private Books books;
-<<<<<<< Updated upstream
-=======
+
 
 //    @Column(name = "user", nullable = false)
 //    private String user;
@@ -39,10 +38,10 @@ public class Reviews {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
-    private Users user;
+    private Users users;
 
     @ManyToOne
     @JoinColumn(name = "author_id")  // Foreign key column in Review table
     private Authors author;
->>>>>>> Stashed changes
+
 }
