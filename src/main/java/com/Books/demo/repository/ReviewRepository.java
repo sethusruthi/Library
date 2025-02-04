@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Reviews, Integer> {
     List<Reviews> findByBooksLibrarianId(Integer librarianId);
+    List<Reviews> findByBooksBookId(Integer bookId);
 }

@@ -1,5 +1,6 @@
 package com.Books.demo.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,12 +40,13 @@ public class Books {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "author-books")
+    @JsonIgnore
     private Authors authors;
 
     @ManyToOne
     @JoinColumn(name = "librarian_id")
-    @JsonBackReference
+    @JsonBackReference(value = "librarian-books")
     private Librarians librarian;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

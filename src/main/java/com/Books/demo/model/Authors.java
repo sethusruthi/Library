@@ -1,5 +1,6 @@
 package com.Books.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,8 @@ public class Authors {
     private String email;
 
     @OneToMany(mappedBy = "authors", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference(value = "author-books")
+    @JsonIgnore
     private List<Books> books;
 }
 
