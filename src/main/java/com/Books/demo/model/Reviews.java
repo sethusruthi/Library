@@ -3,14 +3,14 @@ package com.Books.demo.model;
 import com.Books.demo.model.Books;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Setter
+@Getter
 public class Reviews {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +30,19 @@ public class Reviews {
     @JoinColumn(name = "book_id", nullable = false)
     @JsonBackReference
     private Books books;
+<<<<<<< Updated upstream
+=======
+
+//    @Column(name = "user", nullable = false)
+//    private String user;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private Users user;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")  // Foreign key column in Review table
+    private Authors author;
+>>>>>>> Stashed changes
 }

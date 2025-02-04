@@ -14,5 +14,6 @@ public interface BookService {
     public List<Books> getBooksByPriceRange(Double minPrice, Double maxPrice);
     Books saveBook(Books book);
     Books addReviewToBook(int bookId, Reviews reviews);
-
+     List<Reviews> getReviewsByAuthor(Integer authorId);
+    Books uploadBooks(Books book, Integer authorId);
 }

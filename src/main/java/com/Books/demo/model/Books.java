@@ -2,15 +2,22 @@ package com.Books.demo.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+<<<<<<< Updated upstream
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+=======
+import lombok.*;
+
+>>>>>>> Stashed changes
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Setter
+@Getter
 public class Books {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,4 +47,23 @@ public class Books {
     @JoinColumn(name = "author_id", nullable = false)
     @JsonBackReference
     private Authors authors;
+<<<<<<< Updated upstream
+=======
+    public void setAuthor(Authors authors) {
+        this.authors = authors;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)  // Different column name
+    private Users author;
+
+    @ManyToOne
+    @JoinColumn(name = "librarian_id")
+    @JsonBackReference
+    private Librarians librarian;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<PurchasedBooks> purchasedByUsers;
+
+>>>>>>> Stashed changes
 }
