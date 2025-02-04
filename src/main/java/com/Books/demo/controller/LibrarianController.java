@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/librarian")
+@RequestMapping("/api/librarian")
 public class LibrarianController {
     @Autowired
     LibrarianService librarianService;

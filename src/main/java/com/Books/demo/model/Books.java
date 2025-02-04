@@ -46,4 +46,7 @@ public class Books {
     @JoinColumn(name = "librarian_id")
     @JsonBackReference
     private Librarians librarian;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserBookPurchase> purchases;
 }
