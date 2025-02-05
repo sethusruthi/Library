@@ -31,9 +31,6 @@ public class Books {
     @Column(name = "cover_image")
     private String coverImage;
 
-//    @Column(name = "rating")
-//    private String rating;
-
     @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Reviews> reviews;
@@ -41,7 +38,6 @@ public class Books {
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     @JsonBackReference(value = "author-books")
-    @JsonIgnore
     private Authors authors;
 
     @ManyToOne
@@ -50,5 +46,6 @@ public class Books {
     private Librarians librarian;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<UserBookPurchase> purchases;
 }

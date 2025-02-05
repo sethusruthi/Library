@@ -2,7 +2,7 @@ package com.Books.demo.Service;
 
 import com.Books.demo.DTO.BulkBookUploadDTO;
 import com.Books.demo.DTO.BulkUploadResponse;
-import com.Books.demo.exception.BookNotFoundException;
+import com.Books.demo.exception.ResourceNotFoundException;
 import com.Books.demo.model.*;
 import com.Books.demo.repository.AuthorRepository;
 import com.Books.demo.repository.BookRepository;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,7 +88,6 @@ public class LibrarianService {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -102,13 +100,13 @@ public class LibrarianService {
 
         // Set author
         Authors author = authorRepository.findById(bookDTO.getAuthorId())
-                .orElseThrow(() -> new RuntimeException("Author not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Author not found"));
         book.setAuthors(author);
 
         // Set librarian if provided
         if (bookDTO.getLibrarianId() != null) {
             Librarians librarian = librarianRepository.findById(bookDTO.getLibrarianId())
-                    .orElseThrow(() -> new RuntimeException("Librarian not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Librarian not found"));
             book.setLibrarian(librarian);
         }
 
@@ -123,7 +121,7 @@ public class LibrarianService {
                 })
                 .orElseThrow(() -> {
                     log.warn("Librarian with ID {} not found", librarianId);
-                    return new BookNotFoundException("Librarian with ID " + librarianId + " not found");
+                    return new ResourceNotFoundException("Librarian with ID " + librarianId + " not found");
                 });
     }
 
@@ -144,7 +142,7 @@ public class LibrarianService {
                 })
                 .orElseThrow(() -> {
                     log.warn("Librarian with ID {} not found", librarianId);
-                    return new BookNotFoundException("Librarian with ID " + librarianId + " not found");
+                    return new ResourceNotFoundException("Librarian with ID " + librarianId + " not found");
                 });
     }
 
@@ -154,14 +152,14 @@ public class LibrarianService {
 
         if (librarianOpt.isEmpty()) {
             log.warn("Librarian with ID {} not found", librarianId);
-            throw new BookNotFoundException("Librarian with ID " + librarianId + " not found");
+            throw new ResourceNotFoundException("Librarian with ID " + librarianId + " not found");
         }
 
         List<Reviews> reviews = reviewRepository.findByBooksLibrarianId(librarianId);
         if (reviews.isEmpty()) {
             log.warn("No reviews found for ID {} ", librarianId);
 
-            throw new BookNotFoundException("No reviews found for librarian with ID " + librarianId);
+            throw new ResourceNotFoundException("No reviews found for librarian with ID " + librarianId);
         }
 
         return reviews;

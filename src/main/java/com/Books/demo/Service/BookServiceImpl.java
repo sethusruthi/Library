@@ -1,8 +1,14 @@
 package com.Books.demo.Service;
+import com.Books.demo.DTO.BookRequestDTO;
 import com.Books.demo.exception.BookNotFoundException;
+import com.Books.demo.exception.ResourceNotFoundException;
+import com.Books.demo.model.Authors;
 import com.Books.demo.model.Books;
+import com.Books.demo.model.Librarians;
 import com.Books.demo.model.Reviews;
+import com.Books.demo.repository.AuthorRepository;
 import com.Books.demo.repository.BookRepository;
+import com.Books.demo.repository.LibrarianRepository;
 import com.Books.demo.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +19,33 @@ public class BookServiceImpl implements BookService{
     @Autowired
     BookRepository bookRepository;
     @Autowired
+    AuthorRepository authorRepository;
+    @Autowired
     ReviewRepository reviewRepository;
-    @Override
-    public Books createBooks(Books books) {
+    @Autowired
 
-        return bookRepository.save(books);
+    LibrarianRepository librarianRepository;
+    @Override
+    public Books createBooks(BookRequestDTO bookRequestDTO) {
+        Authors author = authorRepository.findById(bookRequestDTO.getAuthorId())
+                .orElseThrow(() -> new ResourceNotFoundException("Author with ID " + bookRequestDTO.getAuthorId() + " not found"));
+
+        // Fetch the librarian if provided
+        Librarians librarian = bookRequestDTO.getLibrarianId() != null
+                ? librarianRepository.findById(bookRequestDTO.getLibrarianId())
+                .orElseThrow(() -> new ResourceNotFoundException("Librarian with ID " + bookRequestDTO.getLibrarianId() + " not found"))
+                : null;
+
+        // Create the Book
+        Books book = new Books();
+        book.setTitle(bookRequestDTO.getTitle());
+        book.setPrice(bookRequestDTO.getPrice());
+        book.setDescription(bookRequestDTO.getDescription());
+        book.setCoverImage(bookRequestDTO.getCoverImage());
+        book.setAuthors(author);
+        book.setLibrarian(librarian);
+
+        return bookRepository.save(book);
     }
 
     @Override

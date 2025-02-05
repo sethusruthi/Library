@@ -1,12 +1,13 @@
 package com.Books.demo.Service;
 
+import com.Books.demo.DTO.BookRequestDTO;
 import com.Books.demo.model.Books;
 import com.Books.demo.model.Reviews;
 
 import java.util.List;
 
 public interface BookService {
-    Books createBooks(Books books);
+    Books createBooks(BookRequestDTO books);
     List<Books> getAllBooks();
     Books getBookByBookId(int bookId);
     void deleteBookById(int bookId);

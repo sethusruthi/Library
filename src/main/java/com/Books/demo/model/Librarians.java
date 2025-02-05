@@ -1,5 +1,6 @@
 package com.Books.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,9 +22,11 @@ public class Librarians {
     private String email;
 
     @OneToMany(mappedBy = "librarian", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Books> managedBooks = new ArrayList<>();
 
     @OneToMany(mappedBy = "librarian", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Users> managedUsers = new ArrayList<>();
 
 
