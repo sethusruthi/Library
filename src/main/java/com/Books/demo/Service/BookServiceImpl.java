@@ -1,15 +1,10 @@
 package com.Books.demo.Service;
 import com.Books.demo.DTO.BookRequestDTO;
+import com.Books.demo.DTO.ReviewRequestDTO;
 import com.Books.demo.exception.BookNotFoundException;
 import com.Books.demo.exception.ResourceNotFoundException;
-import com.Books.demo.model.Authors;
-import com.Books.demo.model.Books;
-import com.Books.demo.model.Librarians;
-import com.Books.demo.model.Reviews;
-import com.Books.demo.repository.AuthorRepository;
-import com.Books.demo.repository.BookRepository;
-import com.Books.demo.repository.LibrarianRepository;
-import com.Books.demo.repository.ReviewRepository;
+import com.Books.demo.model.*;
+import com.Books.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +17,8 @@ public class BookServiceImpl implements BookService{
     AuthorRepository authorRepository;
     @Autowired
     ReviewRepository reviewRepository;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
 
     LibrarianRepository librarianRepository;
@@ -89,12 +86,17 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Books addReviewToBook(int bookId, Reviews reviews) {
+    public Books addReviewToBook(int bookId, ReviewRequestDTO reviewRequest) {
         Books books = bookRepository.findById(bookId).orElseThrow
-                (()->new RuntimeException("Book not Found"));
-        reviews.setBooks(books);
-        reviewRepository.save(reviews);
-
+                (()->new ResourceNotFoundException("Book with id "+ bookId +"not Found"));
+        Users users = userRepository.findById(reviewRequest.getUserId()).orElseThrow
+                (()-> new ResourceNotFoundException("User with id "+reviewRequest.getUserId()+" not Found"));
+        Reviews review = new Reviews();
+        review.setComment(reviewRequest.getComment());
+        review.setRating(reviewRequest.getRating());
+        review.setBooks(books);
+        review.setUser(users);
+        reviewRepository.save(review);
         return books;
     }
 }

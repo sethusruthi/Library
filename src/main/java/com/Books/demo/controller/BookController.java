@@ -1,9 +1,8 @@
 package com.Books.demo.controller;
-
 import com.Books.demo.DTO.BookRequestDTO;
+import com.Books.demo.DTO.ReviewRequestDTO;
 import com.Books.demo.Service.BookService;
 import com.Books.demo.model.Books;
-import com.Books.demo.model.Reviews;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
-@Validated  // Enable validation at the controller level
+@Validated
 public class BookController {
     @Autowired
     BookService bookService;
@@ -43,9 +42,9 @@ public class BookController {
                                             @PathVariable Double maxPrice){
         return bookService.getBooksByPriceRange(minPrice, maxPrice);
     }
-    @PostMapping("/addReviewToBook/{bookId}")
-    public Books postReview(@PathVariable int bookId, @RequestBody Reviews reviews) {
-        return bookService.addReviewToBook(bookId, reviews);
+    @PostMapping("/{bookId}/reviews")
+    public Books postReview(@PathVariable int bookId, @Valid @RequestBody ReviewRequestDTO reviewRequestDTO) {
+        return bookService.addReviewToBook(bookId, reviewRequestDTO);
     }
 
 }
