@@ -1,6 +1,5 @@
 
 package com.Books.demo.model;
-import com.Books.demo.model.Books;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,8 +16,6 @@ public class Reviews {
     @Column(name = "review_id", nullable = false)
     private Integer id;
 
-    @Column(name = "user", nullable = false)
-    private String user;
 
     @Column(name = "comment", nullable = false)
     private String comment;
@@ -30,4 +27,12 @@ public class Reviews {
     @JoinColumn(name = "book_id", nullable = false)
     @JsonBackReference
     private Books books;
+
+//    @Column(name = "user", nullable = false)
+//    private String user;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private Users user;
 }

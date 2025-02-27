@@ -8,5 +8,6 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Books, Integer> {
 
     List<Books> findByPriceBetween(Double minPrice, Double maxPrice);
+    List<Books> findByAuthorsId(Integer authorId);
 }
 
